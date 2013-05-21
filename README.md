@@ -60,11 +60,10 @@ Documentation can be found in the 'doc' directory of the xlwt package. If these 
 
 Problems:
 ----------------------------
-Try the following in this order:
-
-Read the source
-Ask a question on http://groups.google.com/group/python-excel/
-E-mail the xlwt maintainer (sjmachin at lexicon.net), including "[xlwt]" as part of the message subject.
+* Try the following in this order:
+* Read the source
+* Ask a question on http://groups.google.com/group/python-excel/
+* E-mail the xlwt maintainer (sjmachin at lexicon.net), including "[xlwt]" as part of the message subject.
 
 Acknowledgements:
 --------------------------------
