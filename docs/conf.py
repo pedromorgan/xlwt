@@ -23,9 +23,9 @@ os.environ['__GEN_DOCS__'] = "1"
 
 from xlwt import __VERSION__ as VERSION
 from xlwt import __AUTHOR__ as AUTHOR
+from xlwt import __PYTHON_EXCEL_MODULE__
+from xlwt import __PYTHON_EXCEL_TITLE__
 
-PROJECT_TITLE = "xlwt - Python Excel"
-MODULE = "xlwt"
 
 # -- General configuration -----------------------------------------------------
 
@@ -120,10 +120,10 @@ html_theme_options = {}
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = PROJECT_TITLE
+html_title = __PYTHON_EXCEL_TITLE__
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title =  MODULE
+html_short_title =  __PYTHON_EXCEL_MODULE__
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
@@ -181,7 +181,7 @@ html_show_copyright = True
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = '%s-doc' % MODULE
+htmlhelp_basename = '%s-doc' % __PYTHON_EXCEL_MODULE__
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -200,7 +200,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', '%s.tex' % MODULE, PROJECT_TITLE, AUTHOR, 'manual'),
+  ('index', '%s.tex' % __PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__, AUTHOR, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -229,7 +229,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', MODULE, PROJECT_TITLE,
+    ('index', __PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__,
      [AUTHOR], 1)
 ]
 
@@ -243,7 +243,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', MODULE, PROJECT_TITLE,
+  ('index', __PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__,
    u'John Machin', 'xlwt', 'One line description of project.',
    'Miscellaneous'),
 ]
