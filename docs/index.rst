@@ -5,8 +5,10 @@ The xlwt Module
    :members:
        
 
+
 **A Python package for generating Microsoft Excel spreadsheet files.**
 
+and 
 
 
 General information
