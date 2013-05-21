@@ -38,19 +38,24 @@ Quick Start
     ws.write(2, 2, xlwt.Formula("A3+B3"))
 
     wb.save('example.xls')
-    
+
+Download
+------------------------
+* Packaged: 
+    * http://pypi.python.org/pypi/xlwt
+* Source Code:
+    * https://github.com/python-excel/xlwt
+
 Installation:
 --------------
 Any OS: Unzip the .zip file into a suitable directory, chdir to that directory, then do "python setup.py install".
 If PYDIR is your Python installation directory: the main files are in PYDIR/Lib/site-packages/xlwt, docs are in the doc subdirectory.
 If os.sep != "/": make the appropriate adjustments.
 
-Download URLs:
-------------------------
-Packaged: http://pypi.python.org/pypi/xlwt
-SVN: https://secure.simplistix.co.uk/svn/xlwt/trunk
-Documentation:
 
+
+Documentation:
+-------------------
 Documentation can be found in the 'doc' directory of the xlwt package. If these aren't sufficient, please consult the code in the examples directory and the source code itself.
 
 Problems:
