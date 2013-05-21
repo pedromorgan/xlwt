@@ -21,8 +21,8 @@ sys.path.insert(0, os.path.abspath(os.path.join('.', '..')))
 
 os.environ['__GEN_DOCS__'] = "1"
 
-from xlwt import __version__ as VERSION
-from xlwt import __author__ as AUTHOR
+from xlwt import __VERSION__ as VERSION
+from xlwt import __AUTHOR__ as AUTHOR
 
 PROJECT_TITLE = "xlwt - Python Excel"
 MODULE = "xlwt"
