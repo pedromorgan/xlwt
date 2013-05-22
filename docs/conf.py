@@ -17,12 +17,16 @@ import sys, os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath(os.path.join('.', '..')))
+_my_docs_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+print _my_docs_path
+if not _my_docs_path in sys.path:
+    sys.path.insert(0, _my_docs_path)
+    print "INSERT", _my_docs_path
 
 os.environ['__GEN_DOCS__'] = "1"
 
-from xlwt import __VERSION__ as VERSION
-from xlwt import __AUTHOR__ as AUTHOR
+from xlwt import __version__ as VERSION
+from xlwt import __author__ as AUTHOR
 from xlwt import __PYTHON_EXCEL_MODULE__
 from xlwt import __PYTHON_EXCEL_TITLE__
 

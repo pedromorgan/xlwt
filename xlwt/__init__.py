@@ -1,14 +1,26 @@
 # -*- coding: utf-8 -*-
 
-__VERSION__ = '0.7.5'
+__version__ = '0.7.5'
 
-
-__AUTHOR__ = 'Landon Jurgens, Chris Withers'
-
+__author__ = 'Landon Jurgens, Chris Withers'
+__license__ = "== TODO =="
 
 ## Ssuggested by pete
 __PYTHON_EXCEL_MODULE__ = "xlwt"
 __PYTHON_EXCEL_TITLE__ = "xlwt - Excel writer"
+
+
+__docformat__ = 'restructuredtext en'
+
+__doc__ = """
+:abstract: Python interface to Request Tracker REST API
+:version: %s
+:author: %s
+:contact: http://www.python-excel.org
+:date: 2013-05-17
+:copyright: %s
+""" % (__version__, __author__, __license__)
+
 
 
 import sys
