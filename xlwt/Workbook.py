@@ -44,7 +44,13 @@ import BIFFRecords
 import Style
 
 class Workbook(object):
-
+    """This is a class representing a workbook and all its contents. When creating
+    Excel files with xlwt, you will normally start by instantiating an
+    object of this class.
+    
+    :param encoding: TODO
+    :param style_compression: TODO
+    """
     #################################################################
     ## Constructor
     #################################################################
