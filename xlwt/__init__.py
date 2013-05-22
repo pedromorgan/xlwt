@@ -13,7 +13,7 @@ __PYTHON_EXCEL_TITLE__ = "xlwt - Excel writer"
 __docformat__ = 'restructuredtext en'
 
 __doc__ = """
-:abstract: Python interface to Request Tracker REST API
+:abstract: A python lib for generating Microsoft Excel spreadsheet files
 :version: %s
 :author: %s
 :contact: http://www.python-excel.org
