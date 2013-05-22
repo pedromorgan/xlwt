@@ -1,14 +1,13 @@
-The xlwt Module
+xlwt
 ===============
+**A python lib for generating Microsoft Excel spreadsheet files**
 
 .. automodule:: xlwt
     :members:
 
 
 
-**A Python package for generating Microsoft Excel spreadsheet files.**
 
-and 
 
 
 General information
@@ -24,6 +23,8 @@ classes not included and any item marked with a *[NC]* is not complete
 and may have further parameters, methods, attributes and functionality
 that are not documented. In these cases, you'll have to refer to the
 source if the documentation provided is insufficient.
+
+pedro morgan is working on above ;-)
 
 
 
