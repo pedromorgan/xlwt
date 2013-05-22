@@ -16,6 +16,7 @@ if sys.version_info[:2] < (2, 3):
     print >> sys.stderr, "Sorry, xlwt requires Python 2.3 or later"
     sys.exit(1)
 
+
 from Workbook import Workbook
 from Worksheet import Worksheet
 from Row import Row
