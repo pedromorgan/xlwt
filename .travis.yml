@@ -15,6 +15,9 @@ python:
 
 
 # command to run tests
-script: nosetests
+script:
+    - cd docs
+    - make html
+    
 
 
