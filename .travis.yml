@@ -9,9 +9,8 @@ python:
   - "3.2"
   - "3.3"
   
-# command to install dependencies
-#install: "pip install -r requirements.txt --use-mirrors"
-#
+before_install:
+    - pip install sphinx
 
 
 # command to run tests
