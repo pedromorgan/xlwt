@@ -1619,7 +1619,7 @@ class FormulaRecord(BiffRecord):
 class GutsRecord(BiffRecord):
     """This record contains information about the layout of outline symbols.
 
-    Record: **GUTS, BIFF3-BIFF8""
+    Record: **GUTS, BIFF3-BIFF8**
 
     +-------+-------+------------------------------------------------------------------------------------+
     |Offset |Size   |Contents                                                                            |
@@ -1641,8 +1641,7 @@ class GutsRecord(BiffRecord):
         self._rec_data = pack('<4H', row_gut_width, col_gut_height, row_visible_levels, col_visible_levels)
 
 class WSBoolRecord(BiffRecord):
-    """
-    This  record stores a 16 bit value with Boolean options for the current
+    """This  record stores a 16 bit value with Boolean options for the current
     sheet.  From BIFF5 on the "Save external linked values" option is moved
     to the record BOOKBOOL.
 
