@@ -1,7 +1,7 @@
 xlwt
 ===============
 
-**A python library for creating Microsoft Excel spreadsheet files**
+**A python library for generating Microsoft Excel spreadsheet files**
 
 ::
 
@@ -18,7 +18,7 @@ xlwt
   wb.save("hello-world.xls")
   
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     quick_start
     examples

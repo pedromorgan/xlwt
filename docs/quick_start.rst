@@ -39,7 +39,10 @@ Workbooks are created with ``xlwt`` by instantiating
 an :py:class:`xlwt.Workbook.Workbook` object, manipulating 
 it and then calling its :py:func:`xlwt.Workbook.Workbook.save` method.
 
-The :ref:``save`` method may be passed either a string containing the path to write to or a file-like object, opened for writing in binary mode, to which the binary Excel file data will be written.
+The :ref:``save`` method may be passed either a 
+* string containing the path to write to 
+* or a file-like object, opened for writing in binary mode
+to which the binary Excel file data will be written.
 
 The following objects can be created within a workbook:
 

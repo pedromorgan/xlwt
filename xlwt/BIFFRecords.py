@@ -31,7 +31,7 @@ class SharedStringTable(object):
             idx = self._str_indexes[s]
             self._tally[idx] += 1
         return idx
-	
+    
     def add_rt(self, rt):
         rtList = []
         for s, xf in rt:
@@ -93,29 +93,29 @@ class SharedStringTable(object):
         is_unicode_str = u_str[2] == '\x01'
         if is_unicode_str:
             atom_len = 5 # 2 byte -- len,
-                         # 1 byte -- options,
-                         # 2 byte -- 1st sym
+                        # 1 byte -- options,
+                        # 2 byte -- 1st sym
         else:
             atom_len = 4 # 2 byte -- len,
-                         # 1 byte -- options,
-                         # 1 byte -- 1st sym
+                        # 1 byte -- options,
+                        # 1 byte -- 1st sym
 
         self._save_atom(u_str[0:atom_len])
         self._save_splitted(u_str[atom_len:], is_unicode_str)
-	
+    
     def _add_rt_to_sst(self, rt):
         rt_str, rt_fr = upack2rt(rt, self.encoding)
         is_unicode_str = rt_str[2] == '\x09'
         if is_unicode_str:
             atom_len = 7 # 2 byte -- len,
-                         # 1 byte -- options,
-                         # 2 byte -- number of rt runs
-                         # 2 byte -- 1st sym
+                        # 1 byte -- options,
+                        # 2 byte -- number of rt runs
+                        # 2 byte -- 1st sym
         else:
             atom_len = 6 # 2 byte -- len,
-                         # 1 byte -- options,
-                         # 2 byte -- number of rt runs
-                         # 1 byte -- 1st sym
+                        # 1 byte -- options,
+                        # 2 byte -- number of rt runs
+                        # 1 byte -- 1st sym
         self._save_atom(rt_str[0:atom_len])
         self._save_splitted(rt_str[atom_len:], is_unicode_str)
         for i in range(0, len(rt_fr), 4):
@@ -204,20 +204,24 @@ class BiffRecord(object):
 
 
 class Biff8BOFRecord(BiffRecord):
-    """
-    Offset Size Contents
-    0      2    Version, contains 0600H for BIFF8 and BIFF8X
-    2      2    Type of the following data:
-                  0005H = Workbook globals
-                  0006H = Visual Basic module
-                  0010H = Worksheet
-                  0020H = Chart
-                  0040H = Macro sheet
-                  0100H = Workspace file
-    4      2    Build identifier
-    6      2    Build year
-    8      4    File history flags
-    12     4    Lowest Excel version that can read all records in this file
+    """Meta data XX
+    
+    +-------+-----+-------------------------------------------------------------+
+    |Offset |  Size  Contents                                                   |
+    +=======+=====+=============================================================+
+    |0       2     Version, contains 0600H for BIFF8 and BIFF8X
+    |2       2     Type of the following data:
+    |              0005H = Workbook globals
+    |              0006H = Visual Basic module
+    |              0010H = Worksheet
+    |              0020H = Chart
+    |              0040H = Macro sheet
+    |              0100H = Workspace file
+    |4       2     Build identifier
+    |6       2     Build year
+    |8       4     File history flags
+    |12      4     Lowest Excel version that can read all records in this file
+    +------+-----+--------------------------------------------------------------+
     """
     _REC_ID      = 0x0809
     # stream types
@@ -282,7 +286,7 @@ class DSFRecord(BiffRecord):
     Record DSF, BIFF8:
     Offset Size Contents
     0        2     0 = Only the BIFF8 Workbook stream is present
-                   1 = Additional BIFF5/BIFF7 Book stream is in the file
+                1 = Additional BIFF5/BIFF7 Book stream is in the file
     A  double  stream file can be read by Excel 5.0 and Excel 95, and still
     contains  all  new  features  added to BIFF8 (which are left out in the
     BIFF5/BIFF7 Book stream).
@@ -404,8 +408,7 @@ class Prot4RevPassRecord(BiffRecord):
 
 
 class BackupRecord(BiffRecord):
-    """
-    This  record  contains  a Boolean value determining whether Excel makes
+    """This  record  contains  a Boolean value determining whether Excel makes
     a backup of the file while saving.
     """
     _REC_ID = 0x0040
@@ -571,43 +574,43 @@ class CodepageBiff8Record(BiffRecord):
 
     Offset  Size    Contents
     0       2       Code page identifier used for byte string text encoding:
-                      016FH = 367 = ASCII
-                      01B5H = 437 = IBM PC CP-437 (US)
-                      02D0H = 720 = IBM PC CP-720 (OEM Arabic)
-                      02E1H = 737 = IBM PC CP-737 (Greek)
-                      0307H = 775 = IBM PC CP-775 (Baltic)
-                      0352H = 850 = IBM PC CP-850 (Latin I)
-                      0354H = 852 = IBM PC CP-852 (Latin II (Central European))
-                      0357H = 855 = IBM PC CP-855 (Cyrillic)
-                      0359H = 857 = IBM PC CP-857 (Turkish)
-                      035AH = 858 = IBM PC CP-858 (Multilingual Latin I with Euro)
-                      035CH = 860 = IBM PC CP-860 (Portuguese)
-                      035DH = 861 = IBM PC CP-861 (Icelandic)
-                      035EH = 862 = IBM PC CP-862 (Hebrew)
-                      035FH = 863 = IBM PC CP-863 (Canadian (French))
-                      0360H = 864 = IBM PC CP-864 (Arabic)
-                      0361H = 865 = IBM PC CP-865 (Nordic)
-                      0362H = 866 = IBM PC CP-866 (Cyrillic (Russian))
-                      0365H = 869 = IBM PC CP-869 (Greek (Modern))
-                      036AH = 874 = Windows CP-874 (Thai)
-                      03A4H = 932 = Windows CP-932 (Japanese Shift-JIS)
-                      03A8H = 936 = Windows CP-936 (Chinese Simplified GBK)
-                      03B5H = 949 = Windows CP-949 (Korean (Wansung))
-                      03B6H = 950 = Windows CP-950 (Chinese Traditional BIG5)
-                      04B0H = 1200 = UTF-16 (BIFF8)
-                      04E2H = 1250 = Windows CP-1250 (Latin II) (Central European)
-                      04E3H = 1251 = Windows CP-1251 (Cyrillic)
-                      04E4H = 1252 = Windows CP-1252 (Latin I) (BIFF4-BIFF7)
-                      04E5H = 1253 = Windows CP-1253 (Greek)
-                      04E6H = 1254 = Windows CP-1254 (Turkish)
-                      04E7H = 1255 = Windows CP-1255 (Hebrew)
-                      04E8H = 1256 = Windows CP-1256 (Arabic)
-                      04E9H = 1257 = Windows CP-1257 (Baltic)
-                      04EAH = 1258 = Windows CP-1258 (Vietnamese)
-                      0551H = 1361 = Windows CP-1361 (Korean (Johab))
-                      2710H = 10000 = Apple Roman
-                      8000H = 32768 = Apple Roman
-                      8001H = 32769 = Windows CP-1252 (Latin I) (BIFF2-BIFF3)
+                    016FH = 367 = ASCII
+                    01B5H = 437 = IBM PC CP-437 (US)
+                    02D0H = 720 = IBM PC CP-720 (OEM Arabic)
+                    02E1H = 737 = IBM PC CP-737 (Greek)
+                    0307H = 775 = IBM PC CP-775 (Baltic)
+                    0352H = 850 = IBM PC CP-850 (Latin I)
+                    0354H = 852 = IBM PC CP-852 (Latin II (Central European))
+                    0357H = 855 = IBM PC CP-855 (Cyrillic)
+                    0359H = 857 = IBM PC CP-857 (Turkish)
+                    035AH = 858 = IBM PC CP-858 (Multilingual Latin I with Euro)
+                    035CH = 860 = IBM PC CP-860 (Portuguese)
+                    035DH = 861 = IBM PC CP-861 (Icelandic)
+                    035EH = 862 = IBM PC CP-862 (Hebrew)
+                    035FH = 863 = IBM PC CP-863 (Canadian (French))
+                    0360H = 864 = IBM PC CP-864 (Arabic)
+                    0361H = 865 = IBM PC CP-865 (Nordic)
+                    0362H = 866 = IBM PC CP-866 (Cyrillic (Russian))
+                    0365H = 869 = IBM PC CP-869 (Greek (Modern))
+                    036AH = 874 = Windows CP-874 (Thai)
+                    03A4H = 932 = Windows CP-932 (Japanese Shift-JIS)
+                    03A8H = 936 = Windows CP-936 (Chinese Simplified GBK)
+                    03B5H = 949 = Windows CP-949 (Korean (Wansung))
+                    03B6H = 950 = Windows CP-950 (Chinese Traditional BIG5)
+                    04B0H = 1200 = UTF-16 (BIFF8)
+                    04E2H = 1250 = Windows CP-1250 (Latin II) (Central European)
+                    04E3H = 1251 = Windows CP-1251 (Cyrillic)
+                    04E4H = 1252 = Windows CP-1252 (Latin I) (BIFF4-BIFF7)
+                    04E5H = 1253 = Windows CP-1253 (Greek)
+                    04E6H = 1254 = Windows CP-1254 (Turkish)
+                    04E7H = 1255 = Windows CP-1255 (Hebrew)
+                    04E8H = 1256 = Windows CP-1256 (Arabic)
+                    04E9H = 1257 = Windows CP-1257 (Baltic)
+                    04EAH = 1258 = Windows CP-1258 (Vietnamese)
+                    0551H = 1361 = Windows CP-1361 (Korean (Johab))
+                    2710H = 10000 = Apple Roman
+                    8000H = 32768 = Apple Roman
+                    8001H = 32769 = Windows CP-1252 (Latin I) (BIFF2-BIFF3)
     """
     _REC_ID = 0x0042
     UTF_16 = 0x04B0
@@ -623,12 +626,12 @@ class Window1Record(BiffRecord):
     4      2    Width of the document window (in twips = 1/20 of a point)
     6      2    Height of the document window (in twips = 1/20 of a point)
     8      2    Option flags:
-                  Bits  Mask  Contents
-                  0     0001H 0 = Window is visible 1 = Window is hidden
-                  1     0002H 0 = Window is open 1 = Window is minimised
-                  3     0008H 0 = Horizontal scroll bar hidden 1 = Horizontal scroll bar visible
-                  4     0010H 0 = Vertical scroll bar hidden 1 = Vertical scroll bar visible
-                  5     0020H 0 = Worksheet tab bar hidden 1 = Worksheet tab bar visible
+                Bits  Mask  Contents
+                0     0001H 0 = Window is visible 1 = Window is hidden
+                1     0002H 0 = Window is open 1 = Window is minimised
+                3     0008H 0 = Horizontal scroll bar hidden 1 = Horizontal scroll bar visible
+                4     0010H 0 = Vertical scroll bar hidden 1 = Vertical scroll bar visible
+                5     0020H 0 = Worksheet tab bar hidden 1 = Worksheet tab bar visible
     10     2    Index to active (displayed) worksheet
     12     2    Index of first visible tab in the worksheet tab bar
     14     2    Number of selected worksheets (highlighted in the worksheet tab bar)
@@ -639,16 +642,16 @@ class Window1Record(BiffRecord):
     # flags
 
     def __init__(self,
-                 hpos_twips, vpos_twips,
-                 width_twips, height_twips,
-                 flags,
-                 active_sheet,
-                 first_tab_index, selected_tabs, tab_width):
+                hpos_twips, vpos_twips,
+                width_twips, height_twips,
+                flags,
+                active_sheet,
+                first_tab_index, selected_tabs, tab_width):
         self._rec_data = pack('<9H', hpos_twips, vpos_twips,
-                                      width_twips, height_twips,
-                                      flags,
-                                      active_sheet,
-                                      first_tab_index, selected_tabs, tab_width)
+                                    width_twips, height_twips,
+                                    flags,
+                                    active_sheet,
+                                    first_tab_index, selected_tabs, tab_width)
 
 class FontRecord(BiffRecord):
     """
@@ -661,11 +664,11 @@ class FontRecord(BiffRecord):
     Offset Size Contents
     0      2    Height of the font (in twips = 1/20 of a point)
     2      2    Option flags:
-                  Bit Mask    Contents
-                  0   0001H   1 = Characters are bold (redundant, see below)
-                  1   0002H   1 = Characters are italic
-                  2   0004H   1 = Characters are underlined (redundant, see below)
-                  3   0008H   1 = Characters are struck out
+                Bit Mask    Contents
+                0   0001H   1 = Characters are bold (redundant, see below)
+                1   0002H   1 = Characters are italic
+                2   0004H   1 = Characters are underlined (redundant, see below)
+                3   0008H   1 = Characters are struck out
                         0010H 1 = Outline
                         0020H  1 = Shadow
     4     2     Colour index
@@ -673,46 +676,46 @@ class FontRecord(BiffRecord):
                 Standard values are 0190H (400) for normal text and 02BCH
                 (700) for bold text.
     8     2     Escapement type:
-                  0000H = None
-                  0001H = Superscript
-                  0002H = Subscript
+                0000H = None
+                0001H = Superscript
+                0002H = Subscript
     10    1     Underline type:
-                  00H = None
-                  01H = Single
-                  21H = Single accounting
-                  02H = Double
-                  22H = Double accounting
+                00H = None
+                01H = Single
+                21H = Single accounting
+                02H = Double
+                22H = Double accounting
     11    1     Font family:
-                  00H = None (unknown or don't care)
-                  01H = Roman (variable width, serifed)
-                  02H = Swiss (variable width, sans-serifed)
-                  03H = Modern (fixed width, serifed or sans-serifed)
-                  04H = Script (cursive)
-                  05H = Decorative (specialised, i.e. Old English, Fraktur)
+                00H = None (unknown or don't care)
+                01H = Roman (variable width, serifed)
+                02H = Swiss (variable width, sans-serifed)
+                03H = Modern (fixed width, serifed or sans-serifed)
+                04H = Script (cursive)
+                05H = Decorative (specialised, i.e. Old English, Fraktur)
     12    1     Character set:
-                  00H = 0 = ANSI Latin
-                  01H = 1 = System default
-                  02H = 2 = Symbol
-                  4DH = 77 = Apple Roman
-                  80H = 128 = ANSI Japanese Shift-JIS
-                  81H = 129 = ANSI Korean (Hangul)
-                  82H = 130 = ANSI Korean (Johab)
-                  86H = 134 = ANSI Chinese Simplified GBK
-                  88H = 136 = ANSI Chinese Traditional BIG5
-                  A1H = 161 = ANSI Greek
-                  A2H = 162 = ANSI Turkish
-                  A3H = 163 = ANSI Vietnamese
-                  B1H = 177 = ANSI Hebrew
-                  B2H = 178 = ANSI Arabic
-                  BAH = 186 = ANSI Baltic
-                  CCH = 204 = ANSI Cyrillic
-                  DEH = 222 = ANSI Thai
-                  EEH = 238 = ANSI Latin II (Central European)
-                  FFH = 255 = OEM Latin I
+                00H = 0 = ANSI Latin
+                01H = 1 = System default
+                02H = 2 = Symbol
+                4DH = 77 = Apple Roman
+                80H = 128 = ANSI Japanese Shift-JIS
+                81H = 129 = ANSI Korean (Hangul)
+                82H = 130 = ANSI Korean (Johab)
+                86H = 134 = ANSI Chinese Simplified GBK
+                88H = 136 = ANSI Chinese Traditional BIG5
+                A1H = 161 = ANSI Greek
+                A2H = 162 = ANSI Turkish
+                A3H = 163 = ANSI Vietnamese
+                B1H = 177 = ANSI Hebrew
+                B2H = 178 = ANSI Arabic
+                BAH = 186 = ANSI Baltic
+                CCH = 204 = ANSI Cyrillic
+                DEH = 222 = ANSI Thai
+                EEH = 238 = ANSI Latin II (Central European)
+                FFH = 255 = OEM Latin I
     13    1     Not used
     14    var.  Font name:
-                  BIFF5/BIFF7: Byte string, 8-bit string length
-                  BIFF8: Unicode string, 8-bit string length
+                BIFF5/BIFF7: Byte string, 8-bit string length
+                BIFF8: Unicode string, 8-bit string length
     The boldness and underline flags are still set in the options field,
     but not used on reading the font. Font weight and underline type
     are specified in separate fields instead.
@@ -879,7 +882,7 @@ class XFRecord(BiffRecord):
     5-0     003FH   Fill pattern
     10-6    07C0H   Colour index for pattern colour
     15-11   F800H   Colour index for pattern background
- ---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
     Record XF, BIFF8:
     Offset      Size    Contents
     0           2       Index to FONT record
@@ -1258,16 +1261,16 @@ class Window2Record(BiffRecord):
     currently  active  view  is  stored  in the SCL record. The type of the
     active view is stored in the option flags field (see below).
 
-     0 0001H 0 = Show formula results 1 = Show formulas
-     1 0002H 0 = Do not show grid lines 1 = Show grid lines
-     2 0004H 0 = Do not show sheet headers 1 = Show sheet headers
-     3 0008H 0 = Panes are not frozen 1 = Panes are frozen (freeze)
-     4 0010H 0 = Show zero values as empty cells 1 = Show zero values
-     5 0020H 0 = Manual grid line colour 1 = Automatic grid line colour
-     6 0040H 0 = Columns from left to right 1 = Columns from right to left
-     7 0080H 0 = Do not show outline symbols 1 = Show outline symbols
-     8 0100H 0 = Keep splits if pane freeze is removed 1 = Remove splits if pane freeze is removed
-     9 0200H 0 = Sheet not selected 1 = Sheet selected (BIFF5-BIFF8)
+    0 0001H 0 = Show formula results 1 = Show formulas
+    1 0002H 0 = Do not show grid lines 1 = Show grid lines
+    2 0004H 0 = Do not show sheet headers 1 = Show sheet headers
+    3 0008H 0 = Panes are not frozen 1 = Panes are frozen (freeze)
+    4 0010H 0 = Show zero values as empty cells 1 = Show zero values
+    5 0020H 0 = Manual grid line colour 1 = Automatic grid line colour
+    6 0040H 0 = Columns from left to right 1 = Columns from right to left
+    7 0080H 0 = Do not show outline symbols 1 = Show outline symbols
+    8 0100H 0 = Keep splits if pane freeze is removed 1 = Remove splits if pane freeze is removed
+    9 0200H 0 = Sheet not selected 1 = Sheet selected (BIFF5-BIFF8)
     10 0400H 0 = Sheet not visible 1 = Sheet visible (BIFF5-BIFF8)
     11 0800H 0 = Show in normal view 1 = Show in page break preview (BIFF8)
 
@@ -1388,9 +1391,9 @@ class PanesRecord(BiffRecord):
                     active_pane, ', '.join(allowed)
                     ))
         self._rec_data = pack('<5H',
-                              px, py,
-                              first_row_bottom, first_col_right,
-                              active_pane)
+                            px, py,
+                            first_row_bottom, first_col_right,
+                            active_pane)
 
 
 class RowRecord(BiffRecord):
@@ -1773,7 +1776,7 @@ class DeltaRecord(BiffRecord):
     Offset  Size    Contents
     0       8       Maximum change in iteration
                     (IEEE 754 floating-point value,
-                     64bit double precision)
+                    64bit double precision)
     """
     _REC_ID = 0x010
 
@@ -1898,7 +1901,7 @@ class HorizontalPageBreaksRecord(BiffRecord):
     Offset  Size  Contents
     0       2     Number of following row index structures (nm)
     2       6nm   List of nm row index structures. Each row index
-                  structure contains:
+                structure contains:
                     Offset  Size    Contents
                     0       2       Index to first row below the page break
                     2       2       Index to first column of this page break
@@ -1924,7 +1927,7 @@ class VerticalPageBreaksRecord(BiffRecord):
     Offset  Size  Contents
     0       2     Number of following column index structures (nm)
     2       6nm   List of nm column index structures. Each column index
-                  structure contains:
+                structure contains:
                     Offset  Size    Contents
                     0       2       Index to first column following the page
                                     break
@@ -2292,37 +2295,37 @@ class NameRecord(BiffRecord):
 
     Record NAME, BIFF5/BIFF7:
     Offset      Size    Contents
-       0          2     Option flags, see below
-       2          1     Keyboard shortcut (only for command macro names, see below)
-       3          1     Length of the name (character count, ln)
-       4          2     Size of the formula data (sz)
-       6          2     0 = Global name, otherwise index to EXTERNSHEET record (one-based)
-       8          2     0 = Global name, otherwise index to sheet (one-based)
-      10          1     Length of menu text (character count, lm)
-      11          1     Length of description text (character count, ld)
-      12          1     Length of help topic text (character count, lh)
-      13          1     Length of status bar text (character count, ls)
-      14         ln     Character array of the name
+    0          2     Option flags, see below
+    2          1     Keyboard shortcut (only for command macro names, see below)
+    3          1     Length of the name (character count, ln)
+    4          2     Size of the formula data (sz)
+    6          2     0 = Global name, otherwise index to EXTERNSHEET record (one-based)
+    8          2     0 = Global name, otherwise index to sheet (one-based)
+    10          1     Length of menu text (character count, lm)
+    11          1     Length of description text (character count, ld)
+    12          1     Length of help topic text (character count, lh)
+    13          1     Length of status bar text (character count, ls)
+    14         ln     Character array of the name
     14+ln        sz     Formula data (RPN token array without size field, 4)
-  14+ln+sz       lm     Character array of menu text
-     var.        ld     Character array of description text
-     var.        lh     Character array of help topic text
-     var.        ls     Character array of status bar text
+14+ln+sz       lm     Character array of menu text
+    var.        ld     Character array of description text
+    var.        lh     Character array of help topic text
+    var.        ls     Character array of status bar text
 
     Record NAME, BIFF8:
     Offset      Size Contents
-       0          2  Option flags, see below
-       2          1  Keyboard shortcut (only for command macro names, see below)
-       3          1  Length of the name (character count, ln)
-       4          2  Size of the formula data (sz)
-       6          2  Not used
-       8          2  0 = Global name, otherwise index to sheet (one-based)
-      10          1  Length of menu text (character count, lm)
-      11          1  Length of description text (character count, ld)
-      12          1  Length of help topic text (character count, lh)
-      13          1  Length of status bar text (character count, ls)
-      14        var. Name (Unicode string without length field, 3.4)
-     var.        sz  Formula data (RPN token array without size field, 4)
+    0          2  Option flags, see below
+    2          1  Keyboard shortcut (only for command macro names, see below)
+    3          1  Length of the name (character count, ln)
+    4          2  Size of the formula data (sz)
+    6          2  Not used
+    8          2  0 = Global name, otherwise index to sheet (one-based)
+    10          1  Length of menu text (character count, lm)
+    11          1  Length of description text (character count, ld)
+    12          1  Length of help topic text (character count, lh)
+    13          1  Length of status bar text (character count, ls)
+    14        var. Name (Unicode string without length field, 3.4)
+    var.        sz  Formula data (RPN token array without size field, 4)
     [var.]      var. (optional, only if lm > 0) Menu text (Unicode string without length field, 3.4)
     [var.]      var. (optional, only if ld > 0) Description text (Unicode string without length field, 3.4)
     [var.]      var. (optional, only if lh > 0) Help topic text (Unicode string without length field, 3.4)
@@ -2358,12 +2361,12 @@ class ExternSheetRecord(BiffRecord):
 
     Record EXTERNSHEET, BIFF8:
     Offset          Size      Contents
-       0             2        Number of following REF structures (nm)
-       2           6nm        List of nm REF structures. Each REF contains the following data:
-                              Offset     Size     Contents
-                                 0         2      Index to SUPBOOK record
-                                 2         2      Index to first SUPBOOK sheet
-                                 4         2      Index to last SUPBOOK sheet
+    0             2        Number of following REF structures (nm)
+    2           6nm        List of nm REF structures. Each REF contains the following data:
+                            Offset     Size     Contents
+                                0         2      Index to SUPBOOK record
+                                2         2      Index to first SUPBOOK sheet
+                                4         2      Index to last SUPBOOK sheet
     """
     _REC_ID = 0x0017
 
@@ -2407,8 +2410,8 @@ class InternalReferenceSupBookRecord(SupBookRecord):
 
     Record SUPBOOK for 3D references, BIFF8:
     Offset         Size   Contents
-      0             2     Number of sheets in this document
-      2             2     01H 04H (relict of BIFF5/BIFF7, the byte string "<04H>", see 3.9.1)
+    0             2     Number of sheets in this document
+    2             2     01H 04H (relict of BIFF5/BIFF7, the byte string "<04H>", see 3.9.1)
 
     """
 
