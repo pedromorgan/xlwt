@@ -1617,16 +1617,21 @@ class FormulaRecord(BiffRecord):
 
 
 class GutsRecord(BiffRecord):
-    """
-    This record contains information about the layout of outline symbols.
+    """This record contains information about the layout of outline symbols.
 
-    Record GUTS, BIFF3-BIFF8:
+    Record: **GUTS, BIFF3-BIFF8""
 
-    Offset  Size    Contents
-    0       2       Width of the area to display row outlines (left of the sheet), in pixel
-    2       2       Height of the area to display column outlines (above the sheet), in pixel
-    4       2       Number of visible row outline levels (used row levels + 1; or 0, if not used)
-    6       2       Number of visible column outline levels (used column levels + 1; or 0, if not used)
+    +-------+-------+------------------------------------------------------------------------------------+
+    |Offset |Size   |Contents                                                                            |
+    +=======+=======+====================================================================================+
+    |0      |2      |Width of the area to display row outlines (left of the sheet), in pixel             |
+    +-------+-------+------------------------------------------------------------------------------------+
+    |2      |2      |Height of the area to display column outlines (above the sheet), in pixel           |
+    +-------+-------+------------------------------------------------------------------------------------+
+    |4      |2      |Number of visible row outline levels (used row levels + 1; or 0, if not used)       |
+    +-------+-------+------------------------------------------------------------------------------------+
+    |6      |2      |Number of visible column outline levels (used column levels + 1; or 0, if not used) |
+    +-------+-------+------------------------------------------------------------------------------------+
 
     """
 
