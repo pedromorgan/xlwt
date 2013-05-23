@@ -1,8 +1,8 @@
 ==============================
-xlwt.ExcelForumlaLexer
+xlwt.ExcelFormulaLexer
 ==============================
 
-.. automodule:: xlwt.ExcelForumlaLexer
+.. automodule:: xlwt.ExcelFormulaLexer
    :members:
    :undoc-members:
    :inherited-members:

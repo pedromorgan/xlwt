@@ -17,16 +17,16 @@ import sys, os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
+
 _my_docs_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-print _my_docs_path
 if not _my_docs_path in sys.path:
     sys.path.insert(0, _my_docs_path)
-    print "INSERT", _my_docs_path
+
 
 os.environ['__GEN_DOCS__'] = "1"
 
-from xlwt import __version__ as VERSION
-from xlwt import __author__ as AUTHOR
+from xlwt import __version__ 
+from xlwt import __author__ 
 from xlwt import __PYTHON_EXCEL_MODULE__
 from xlwt import __PYTHON_EXCEL_TITLE__
 
@@ -61,15 +61,15 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'xlwt'
-copyright = u'2012, John Machin'
+project = __PYTHON_EXCEL_MODULE__
+copyright = u'%s, John Machin'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = VERSION
+version = __version__
 # The full version, including alpha/beta/rc tags.
 release = ""
 
@@ -112,7 +112,9 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'pyramid' #'haiku' #'agogo' #'pyramid' #'nature' #'default'
+# 'haiku' #'agogo' #'pyramid' #'nature' #'default'
+
+html_theme = "nature"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -204,7 +206,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', '%s.tex' % __PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__, AUTHOR, 'manual'),
+  ('index', '%s.tex' % __PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__, __author__, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -234,7 +236,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', __PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__,
-     [AUTHOR], 1)
+     [__author__], 1)
 ]
 
 # If true, show URL addresses after external links.

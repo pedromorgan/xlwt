@@ -6,6 +6,7 @@ xlwt
 .. toctree::
     :maxdepth: 2
 
+    quick_start
     Workbook
     Worksheet
     Row
@@ -14,10 +15,11 @@ xlwt
     Formatting
     Style
     ExcelFormula
-    ExcelForumlaLexer
+    ExcelFormulaLexer
+    ExcelFormulaParser
     ExcelMagic
     CompoundDoc
-    Utila
+    Utils
     UnicodeUtils
     Bitmap
     antlr
