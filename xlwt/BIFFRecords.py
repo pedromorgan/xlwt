@@ -457,11 +457,14 @@ class BookBoolRecord(BiffRecord):
     linked  from external workbooks (CRN records and XCT records). In BIFF3
     and BIFF4 this option is stored in the WSBOOL record.
 
-    Record BOOKBOOL, BIFF5-BIFF8:
+    Record: **BOOKBOOL, BIFF5-BIFF8**
 
-    Offset  Size    Contents
-    0       2       0 = Save external linked values;
-                    1 = Do not save external linked values
+    +--------+--------+-----------------------------------------+
+    |Offset  |Size    |Contents                                 |
+    +========+========+=========================================+
+    |0       |2       | * 0 = Save external linked values;      |
+    |        |        | * 1 = Do not save external linked values|
+    +--------+--------+-----------------------------------------+
     """
 
     _REC_ID = 0x00DA
@@ -662,70 +665,90 @@ class Window1Record(BiffRecord):
 
 class FontRecord(BiffRecord):
     """
-    WARNING
+    .. warning:: 
         The font with index 4 is omitted in all BIFF versions.
         This means the first four fonts have zero-based indexes, and
         the fifth font and all following fonts are referenced with one-based
         indexes.
 
-    Offset Size Contents
-    0      2    Height of the font (in twips = 1/20 of a point)
-    2      2    Option flags:
-                Bit Mask    Contents
-                0   0001H   1 = Characters are bold (redundant, see below)
-                1   0002H   1 = Characters are italic
-                2   0004H   1 = Characters are underlined (redundant, see below)
-                3   0008H   1 = Characters are struck out
-                        0010H 1 = Outline
-                        0020H  1 = Shadow
-    4     2     Colour index
-    6     2     Font weight (100-1000).
-                Standard values are 0190H (400) for normal text and 02BCH
-                (700) for bold text.
-    8     2     Escapement type:
-                0000H = None
-                0001H = Superscript
-                0002H = Subscript
-    10    1     Underline type:
-                00H = None
-                01H = Single
-                21H = Single accounting
-                02H = Double
-                22H = Double accounting
-    11    1     Font family:
-                00H = None (unknown or don't care)
-                01H = Roman (variable width, serifed)
-                02H = Swiss (variable width, sans-serifed)
-                03H = Modern (fixed width, serifed or sans-serifed)
-                04H = Script (cursive)
-                05H = Decorative (specialised, i.e. Old English, Fraktur)
-    12    1     Character set:
-                00H = 0 = ANSI Latin
-                01H = 1 = System default
-                02H = 2 = Symbol
-                4DH = 77 = Apple Roman
-                80H = 128 = ANSI Japanese Shift-JIS
-                81H = 129 = ANSI Korean (Hangul)
-                82H = 130 = ANSI Korean (Johab)
-                86H = 134 = ANSI Chinese Simplified GBK
-                88H = 136 = ANSI Chinese Traditional BIG5
-                A1H = 161 = ANSI Greek
-                A2H = 162 = ANSI Turkish
-                A3H = 163 = ANSI Vietnamese
-                B1H = 177 = ANSI Hebrew
-                B2H = 178 = ANSI Arabic
-                BAH = 186 = ANSI Baltic
-                CCH = 204 = ANSI Cyrillic
-                DEH = 222 = ANSI Thai
-                EEH = 238 = ANSI Latin II (Central European)
-                FFH = 255 = OEM Latin I
-    13    1     Not used
-    14    var.  Font name:
-                BIFF5/BIFF7: Byte string, 8-bit string length
-                BIFF8: Unicode string, 8-bit string length
-    The boldness and underline flags are still set in the options field,
-    but not used on reading the font. Font weight and underline type
-    are specified in separate fields instead.
+    +-------+-----+-----------------------------------------------------------------------------+
+    |Offset |Size |Contents                                                                     |
+    +=======+=====+=============================================================================+
+    |0      |2    |Height of the font (in twips = 1/20 of a point)                              |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |2      |2    |Option flags:                                                                |
+    |       |     |  +----+--------+-----------------------------------------------------+      |
+    |       |     |  |Bit |Mask    |Contents                                             |      |
+    |       |     |  +====+========+=====================================================+      |
+    |       |     |  |0   |0001H   |1 = Characters are bold (redundant, see below)       |      |
+    |       |     |  +----+--------+-----------------------------------------------------+      |
+    |       |     |  |1   |0002H   |1 = Characters are italic                            |      |
+    |       |     |  +----+--------+-----------------------------------------------------+      |
+    |       |     |  |2   |0004H   |1 = Characters are underlined (redundant, see below) |      |
+    |       |     |  +----+--------+-----------------------------------------------------+      |
+    |       |     |  |3   |0008H   |1 = Characters are struck out                        |      |
+    |       |     |  +----+--------+-----------------------------------------------------+      |
+    |       |     |  |    |0010H   |1 = Outline                                          |      |
+    |       |     |  +----+--------+-----------------------------------------------------+      |
+    |       |     |  |    |0020H   |1 = Shadow                                           |      |
+    |       |     |  +----+--------+-----------------------------------------------------+      |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |4      |2    |Colour index                                                                 |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |6      |2    | Font weight (100-1000).                                                     |
+    |       |     |   * Standard values are 0190H (400) for normal text                         |
+    |       |     |   * 02BCH (700) for bold text.                                              |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |8      |2    | Escapement type:                                                            |
+    |       |     |  * 0000H = None                                                             |
+    |       |     |  * 0001H = Superscript                                                      |
+    |       |     |  * 0002H = Subscript                                                        |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |10     |1    | Underline type:                                                             |
+    |       |     |  * 00H = None                                                               |
+    |       |     |  * 01H = Single                                                             |
+    |       |     |  * 21H = Single accounting                                                  |
+    |       |     |  * 02H = Double                                                             |
+    |       |     |  * 22H = Double accounting                                                  |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |11     |1    | Font family:                                                                |
+    |       |     |  * 00H = None (unknown or don't care)                                       |
+    |       |     |  * 01H = Roman (variable width, serifed)                                    |
+    |       |     |  * 02H = Swiss (variable width, sans-serifed)                               |
+    |       |     |  * 03H = Modern (fixed width, serifed or sans-serifed)                      |
+    |       |     |  * 04H = Script (cursive)                                                   |
+    |       |     |  * 05H = Decorative (specialised, i.e. Old English, Fraktur)                |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |12     |1    | Character set:                                                              |
+    |       |     |  * 00H = 0 = ANSI Latin                                                     |
+    |       |     |  * 01H = 1 = System default                                                 |                                 
+    |       |     |  * 02H = 2 = Symbol                                                         |
+    |       |     |  * 4DH = 77 = Apple Roman                                                   |
+    |       |     |  * 80H = 128 = ANSI Japanese Shift-JIS                                      |
+    |       |     |  * 81H = 129 = ANSI Korean (Hangul)                                         |
+    |       |     |  * 82H = 130 = ANSI Korean (Johab)                                          |
+    |       |     |  * 86H = 134 = ANSI Chinese Simplified GBK                                  |
+    |       |     |  * 88H = 136 = ANSI Chinese Traditional BIG5                                |
+    |       |     |  * A1H = 161 = ANSI Greek                                                   |
+    |       |     |  * A2H = 162 = ANSI Turkish                                                 |
+    |       |     |  * A3H = 163 = ANSI Vietnamese                                              |
+    |       |     |  * B1H = 177 = ANSI Hebrew                                                  |
+    |       |     |  * B2H = 178 = ANSI Arabic                                                  |
+    |       |     |  * BAH = 186 = ANSI Baltic                                                  |
+    |       |     |  * CCH = 204 = ANSI Cyrillic                                                |
+    |       |     |  * DEH = 222 = ANSI Thai                                                    |
+    |       |     |  * EEH = 238 = ANSI Latin II (Central European)                             |
+    |       |     |  * FFH = 255 = OEM Latin I                                                  |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |13     |1    |Not used                                                                     |
+    +-------+-----+-----------------------------------------------------------------------------+
+    |14     |var. |Font name:                                                                   |
+    |       |     |  BIFF5/BIFF7: Byte string, 8-bit string length                              |
+    |       |     |  BIFF8: Unicode string, 8-bit string length                                 |
+    +-------+-----+-----------------------------------------------------------------------------+
+    
+    * The boldness and underline flags are still set in the options field, but not used on reading the font. 
+    * Font weight and underline type are specified in separate fields instead.
     """
     _REC_ID = 0x0031
 
@@ -742,10 +765,15 @@ class FontRecord(BiffRecord):
 
 class NumberFormatRecord(BiffRecord):
     """
-    Record FORMAT, BIFF8:
-    Offset  Size    Contents
-    0       2       Format index used in other records
-    2       var.    Number format string (Unicode string, 16-bit string length)
+    Record: **FORMAT, BIFF8**
+    
+    +--------+--------+---------------------------------------------------------------+ 
+    |Offset  |Size    |Contents                                                       |
+    +========+========+===============================================================+ 
+    |0       |2       |Format index used in other records                             |
+    +--------+--------+---------------------------------------------------------------+
+    |2       |var.    |Number format string (Unicode string, 16-bit string length)    |
+    +--------+--------+---------------------------------------------------------------+
 
     From  BIFF5  on,  the built-in number formats will be omitted. The built-in
     formats  are  dependent  on  the current regional settings of the operating
@@ -755,43 +783,79 @@ class NumberFormatRecord(BiffRecord):
 
     The built-in number formats, BIFF5-BIFF8
 
-    Index   Type        Format string
-    0       General     General
-    1       Decimal     0
-    2       Decimal     0.00
-    3       Decimal     #,##0
-    4       Decimal     #,##0.00
-    5       Currency    "$"#,##0_);("$"#,##
-    6       Currency    "$"#,##0_);[Red]("$"#,##
-    7       Currency    "$"#,##0.00_);("$"#,##
-    8       Currency    "$"#,##0.00_);[Red]("$"#,##
-    9       Percent     0%
-    10      Percent     0.00%
-    11      Scientific  0.00E+00
-    12      Fraction    # ?/?
-    13      Fraction    # ??/??
-    14      Date        M/D/YY
-    15      Date        D-MMM-YY
-    16      Date        D-MMM
-    17      Date        MMM-YY
-    18      Time        h:mm AM/PM
-    19      Time        h:mm:ss AM/PM
-    20      Time        h:mm
-    21      Time        h:mm:ss
-    22      Date/Time   M/D/YY h:mm
-    37      Account     _(#,##0_);(#,##0)
-    38      Account     _(#,##0_);[Red](#,##0)
-    39      Account     _(#,##0.00_);(#,##0.00)
-    40      Account     _(#,##0.00_);[Red](#,##0.00)
-    41      Currency    _("$"* #,##0_);_("$"* (#,##0);_("$"* "-"_);_(@_)
-    42      Currency    _(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)
-    43      Currency    _("$"* #,##0.00_);_("$"* (#,##0.00);_("$"* "-"??_);_(@_)
-    44      Currency    _(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)
-    45      Time        mm:ss
-    46      Time        [h]:mm:ss
-    47      Time        mm:ss.0
-    48      Scientific  ##0.0E+0
-    49      Text        @
+    +--------+------------+---------------------------------------------------------------+
+    |Index   |Type        |Format string                                                  |
+    +========+============+===============================================================+
+    |0       |General     |General                                                        |
+    +--------+------------+---------------------------------------------------------------+
+    |1       |Decimal     |0                                                              |
+    +--------+------------+---------------------------------------------------------------+
+    |2       |Decimal     |0.00                                                           |
+    +--------+------------+---------------------------------------------------------------+
+    |3       |Decimal     |#,##0                                                          |
+    +--------+------------+---------------------------------------------------------------+
+    |4       |Decimal     |#,##0.00                                                       |
+    +--------+------------+---------------------------------------------------------------+
+    |5       |Currency    |"$"#,##0_);("$"#,##                                            |
+    +--------+------------+---------------------------------------------------------------+
+    |6       |Currency    |"$"#,##0_);[Red]("$"#,##                                       |
+    +--------+------------+---------------------------------------------------------------+
+    |7       |Currency    |"$"#,##0.00_);("$"#,##                                         |
+    +--------+------------+---------------------------------------------------------------+
+    |8       |Currency    |"$"#,##0.00_);[Red]("$"#,##                                    |
+    +--------+------------+---------------------------------------------------------------+
+    |9       |Percent     |0%                                                             |
+    +--------+------------+---------------------------------------------------------------+
+    |10      |Percent     |0.00%                                                          |
+    +--------+------------+---------------------------------------------------------------+
+    |11      |Scientific  |0.00E+00                                                       |
+    +--------+------------+---------------------------------------------------------------+
+    |12      |Fraction    |# ?/?                                                          |
+    +--------+------------+---------------------------------------------------------------+
+    |13      |Fraction    |# ??/??                                                        |
+    +--------+------------+---------------------------------------------------------------+
+    |14      |Date        |M/D/YY                                                         |
+    +--------+------------+---------------------------------------------------------------+
+    |15      |Date        |D-MMM-YY                                                       |
+    +--------+------------+---------------------------------------------------------------+
+    |16      |Date        |D-MMM                                                          |
+    +--------+------------+---------------------------------------------------------------+
+    |17      |Date        |MMM-YY                                                         |
+    +--------+------------+---------------------------------------------------------------+
+    |18      |Time        |h:mm AM/PM                                                     |
+    +--------+------------+---------------------------------------------------------------+
+    |19      |Time        |h:mm:ss AM/PM                                                  |
+    +--------+------------+---------------------------------------------------------------+
+    |20      |Time        |h:mm                                                           |
+    +--------+------------+---------------------------------------------------------------+
+    |21      |Time        |h:mm:ss                                                        |
+    +--------+------------+---------------------------------------------------------------+
+    |22      |Date/Time   |M/D/YY h:mm                                                    |
+    +--------+------------+---------------------------------------------------------------+
+    |37      |Account     |_(#,##0_);(#,##0)                                              |
+    +--------+------------+---------------------------------------------------------------+
+    |38      |Account     |_(#,##0_);[Red](#,##0)                                         |
+    +--------+------------+---------------------------------------------------------------+
+    |39      |Account     |_(#,##0.00_);(#,##0.00)                                        |
+    +--------+------------+---------------------------------------------------------------+
+    |40      |Account     |_(#,##0.00_);[Red](#,##0.00)                                   |
+    +--------+------------+---------------------------------------------------------------+
+    |41      |Currency    |_("$"* #,##0_);_("$"* (#,##0);_("$"* "-"_);_(@_)               |
+    +--------+------------+---------------------------------------------------------------+
+    |42      |Currency    |_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)                        |
+    |43      |Currency    |_("$"* #,##0.00_);_("$"* (#,##0.00);_("$"* "-"??_);_(@_)       |
+    |44      |Currency    |_(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)                |
+    +--------+------------+---------------------------------------------------------------+
+    |45      |Time        |mm:ss                                                          |
+    +--------+------------+---------------------------------------------------------------+
+    |46      |Time        |[h]:mm:ss                                                      |
+    +--------+------------+---------------------------------------------------------------+
+    |47      |Time        |mm:ss.0                                                        |
+    +--------+------------+---------------------------------------------------------------+
+    |48      |Scientific  |##0.0E+0                                                       |
+    +--------+------------+---------------------------------------------------------------+
+    |49      |Text        |@                                                              |
+    +--------+------------+---------------------------------------------------------------+
     """
     _REC_ID = 0x041E
 
@@ -1132,9 +1196,13 @@ class ContinueRecord(BiffRecord):
     the  record  must  be  split.  Several  CONTINUE records containing the
     additional data are added after the parent record.
 
-    BIFF version    Maximum data size of a record
-    BIFF2-BIFF7     2080 bytes (2084 bytes including record header)
-    BIFF8           8224 bytes (8228 bytes including record header) (0x2020)
+    +----------------+---------------------------------------------------------+
+    |BIFF version    |Maximum data size of a record                            |
+    +================+=========================================================+
+    |BIFF2-BIFF7     |2080 bytes (2084 bytes including record header)          |
+    +----------------+---------------------------------------------------------+
+    |BIFF8           |8224 bytes (8228 bytes including record header) (0x2020) |
+    +----------------+---------------------------------------------------------+
 
     Record CONTINUE, BIFF2-BIFF8:
     Offset  Size    Contents
@@ -1165,11 +1233,17 @@ class SSTRecord(BiffRecord):
     workbook.  Each string occurs only once. The workbook uses indexes into
     the list to reference the strings.
 
-    Record SST, BIFF8:
-    Offset  Size    Contents
-    0       4       Total number of strings in the workbook (see below)
-    4       4       Number of following strings (nm)
-    8       var.    List of nm Unicode strings, 16-bit string length
+    Record: **SST, BIFF8**
+    
+    +--------+--------+----------------------------------------------------+
+    |Offset  |Size    |Contents                                            |
+    +========+========+====================================================+
+    |0       |4       |Total number of strings in the workbook (see below) |
+    +--------+--------+----------------------------------------------------+
+    |4       |4       |Number of following strings (nm)                    |
+    +--------+--------+----------------------------------------------------+
+    |8       |var.    |List of nm Unicode strings, 16-bit string length    |
+    +--------+--------+----------------------------------------------------+
 
     The  first  field  of  the  SST  record  counts  the  total  occurrence
     of  strings  in  the  workbook.  For  instance,  the string AAA is used
@@ -1188,17 +1262,28 @@ class ExtSSTRecord(BiffRecord):
     might  contain  invalid  data. The stream indexes in this record divide
     the SST into portions containing a constant number of strings.
 
-    Record EXTSST, BIFF8:
+    Record: **EXTSST, BIFF8**
 
-    Offset  Size    Contents
-    0       2       Number of strings in a portion, this number is >=8
-    2       var.    List of OFFSET structures for all portions. Each OFFSET contains the following data:
-                        Offset Size Contents
-                        0       4   Absolute stream position of first string of the portion
-                        4       2   Position of first string of the portion inside of current record,
-                                    including record header. This counter restarts at zero, if the SST
-                                    record is continued with a CONTINUE record.
-                        6       2   Not used
+    +--------+------+----------------------------------------------------------------------------------------+
+    |Offset  |Size  |Contents                                                                                |
+    +========+======+========================================================================================+
+    |0       |2     |Number of strings in a portion, this number is >=8                                      |
+    +--------+------+----------------------------------------------------------------------------------------+
+    |2       |var.  |List of OFFSET structures for all portions. Each OFFSET contains the following data:    |
+    |        |      |                                                                                        +
+    |        |      | +-------+-----+--------------------------------------------------------------------+   |
+    |        |      | |Offset |Size |Contents                                                            |   |
+    |        |      | +=======+=====+====================================================================+   |
+    |        |      | |0      |4    |Absolute stream position of first string of the portion             |   |
+    |        |      | +-------+-----+--------------------------------------------------------------------+   |
+    |        \      | |4      |2    |Position of first string of the portion inside of current record,   |   |
+    |        |      | |       |     |including record header. This counter restarts at zero, if the SST  |   |
+    |        |      | |       |     |record is continued with a CONTINUE record.                         |   |
+    |        |      | +-------+-----+--------------------------------------------------------------------+   |
+    |        |      | |6      |2    |Not used                                                            |   |
+    |        |      | +-------+-----+--------------------------------------------------------------------+   |
+    +--------+------+----------------------------------------------------------------------------------------+
+    
     """
     _REC_ID = 0x00FF
 
@@ -1226,14 +1311,21 @@ class ExtSSTRecord(BiffRecord):
 
 class DimensionsRecord(BiffRecord):
     """
-    Record DIMENSIONS, BIFF8:
+    Record: **DIMENSIONS, BIFF8**
 
-    Offset  Size    Contents
-    0       4       Index to first used row
-    4       4       Index to last used row, increased by 1
-    8       2       Index to first used column
-    10      2       Index to last used column, increased by 1
-    12      2       Not used
+    +--------+--------+--------------------------------------------+
+    |Offset  |Size    |Contents                                    |
+    +========+========+============================================+ 
+    |0       |4       |Index to first used row                     |
+    +--------+--------+--------------------------------------------+
+    |4       |4       \Index to last used row, increased by 1      |
+    +--------+--------+--------------------------------------------+
+    |8       |2       |Index to first used column                  |
+    +--------+--------+--------------------------------------------+
+    |10      |2       |Index to last used column, increased by 1   |
+    +--------+--------+--------------------------------------------+
+    |12      |2       |Not used                                    |
+    +--------+--------+--------------------------------------------+
     """
     _REC_ID = 0x0200
     def __init__(self, first_used_row, last_used_row, first_used_col, last_used_col):
@@ -1249,18 +1341,28 @@ class DimensionsRecord(BiffRecord):
 
 class Window2Record(BiffRecord):
     """
-    Record WINDOW2, BIFF8:
+    Record: **WINDOW2, BIFF8**
 
-    Offset  Size Contents
-    0       2 Option flags (see below)
-    2       2 Index to first visible row
-    4       2 Index to first visible column
-    6       2 Colour index of grid line colour. Note that in BIFF2-BIFF7 an RGB colour is
-                written instead.
-    8       2 Not used
-    10      2 Cached magnification factor in page break preview (in percent); 0 = Default (60%)
-    12      2 Cached magnification factor in normal view (in percent); 0 = Default (100%)
-    14      4 Not used
+    +--------+-----+----------------------------------------------------------------------------------+
+    |Offset  |Size |Contents                                                                          |
+    +========+=====+==================================================================================+
+    |0       |2    |Option flags (see below)                                                          |
+    +--------+-----+----------------------------------------------------------------------------------+
+    |2       |2    |Index to first visible row                                                        |
+    +--------+-----+----------------------------------------------------------------------------------+
+    |4       |2    |Index to first visible column                                                     |
+    +--------+-----+----------------------------------------------------------------------------------+
+    |6       |2    |Colour index of grid line colour. Note that in BIFF2-BIFF7 an RGB colour is       |
+    |        |     |written instead.                                                                  |
+    +--------+-----+----------------------------------------------------------------------------------+
+    |8       |2    |Not used                                                                          |
+    +--------+-----+----------------------------------------------------------------------------------+
+    |10      |2    |Cached magnification factor in page break preview (in percent); 0 = Default (60%) |
+    +--------+-----+----------------------------------------------------------------------------------+
+    |12      |2    |Cached magnification factor in normal view (in percent); 0 = Default (100%)       |
+    +--------+-----+----------------------------------------------------------------------------------+
+    |14      |4    |Not used                                                                          |
+    +--------+-----+----------------------------------------------------------------------------------+
 
     In  BIFF8  this record stores used magnification factors for page break
     preview  and  normal  view.  These  values  are  used  to  restore  the
@@ -1268,33 +1370,50 @@ class Window2Record(BiffRecord):
     currently  active  view  is  stored  in the SCL record. The type of the
     active view is stored in the option flags field (see below).
 
-    0 0001H 0 = Show formula results 1 = Show formulas
-    1 0002H 0 = Do not show grid lines 1 = Show grid lines
-    2 0004H 0 = Do not show sheet headers 1 = Show sheet headers
-    3 0008H 0 = Panes are not frozen 1 = Panes are frozen (freeze)
-    4 0010H 0 = Show zero values as empty cells 1 = Show zero values
-    5 0020H 0 = Manual grid line colour 1 = Automatic grid line colour
-    6 0040H 0 = Columns from left to right 1 = Columns from right to left
-    7 0080H 0 = Do not show outline symbols 1 = Show outline symbols
-    8 0100H 0 = Keep splits if pane freeze is removed 1 = Remove splits if pane freeze is removed
-    9 0200H 0 = Sheet not selected 1 = Sheet selected (BIFF5-BIFF8)
-    10 0400H 0 = Sheet not visible 1 = Sheet visible (BIFF5-BIFF8)
-    11 0800H 0 = Show in normal view 1 = Show in page break preview (BIFF8)
+    +---+------+---------------------------------------------------------------------------------------+
+    |0  |0001H |0 = Show formula results 1 = Show formulas                                             |
+    +---+------+---------------------------------------------------------------------------------------+
+    |1  |0002H |0 = Do not show grid lines 1 = Show grid lines                                         |
+    +---+------+---------------------------------------------------------------------------------------+
+    |2  |0004H |0 = Do not show sheet headers 1 = Show sheet headers                                   |
+    +---+------+---------------------------------------------------------------------------------------+
+    |3  |0008H |0 = Panes are not frozen 1 = Panes are frozen (freeze)                                 |
+    +---+------+---------------------------------------------------------------------------------------+
+    |4  |0010H |0 = Show zero values as empty cells 1 = Show zero values                               |
+    +---+------+---------------------------------------------------------------------------------------+
+    |5  |0020H |0 = Manual grid line colour 1 = Automatic grid line colour                             |
+    +---+------+---------------------------------------------------------------------------------------+
+    |6  |0040H |0 = Columns from left to right 1 = Columns from right to left                          |
+    +---+------+---------------------------------------------------------------------------------------+
+    |7  |0080H |0 = Do not show outline symbols 1 = Show outline symbols                               |
+    +---+------+---------------------------------------------------------------------------------------+
+    |8  |0100H |0 = Keep splits if pane freeze is removed 1 = Remove splits if pane freeze is removed  |
+    +---+------+---------------------------------------------------------------------------------------+
+    |9  |0200H |0 = Sheet not selected 1 = Sheet selected (BIFF5-BIFF8)                                |
+    +---+------+---------------------------------------------------------------------------------------+
+    |10 |0400H |0 = Sheet not visible 1 = Sheet visible (BIFF5-BIFF8)                                  |
+    +---+------+---------------------------------------------------------------------------------------+
+    |11 |0800H |0 = Show in normal view 1 = Show in page break preview (BIFF8)                         |
+    +---+------+---------------------------------------------------------------------------------------+
 
     The freeze flag specifies, if a following PANE record describes unfrozen or frozen panes.
 
     *** This class appends the optional SCL record ***
 
-    Record SCL, BIFF4-BIFF8:
+    Record: **SCL, BIFF4-BIFF8**
 
     This record stores the magnification of the active view of the current worksheet.
     In BIFF8 this can be either the normal view or the page break preview.
     This is determined in the WINDOW2 record. The SCL record is part of the
     Sheet View Settings Block.
 
-    Offset  Size    Contents
-    0       2       Numerator of the view magnification fraction (num)
-    2       2       Denumerator [denominator] of the view magnification fraction (den)
+    +--------+--------+---------------------------------------------------------------------+
+    |Offset  |Size    |Contents                                                             |
+    +========+========+=====================================================================+
+    |0       |2       |Numerator of the view magnification fraction (num)                   |
+     +--------+--------+--------------------------------------------------------------------+
+    |2       |2       |Denumerator [denominator] of the view magnification fraction (den)   |
+    +--------+--------+---------------------------------------------------------------------+
     The magnification is stored as reduced fraction. The magnification results from num/den.
 
     SJM note: Excel expresses (e.g.) 25% in reduced form i.e. 1/4. Reason unknown. This code
@@ -1539,12 +1658,17 @@ class BlankRecord(BiffRecord):
     """
     This  record  represents  an empty cell.
 
-    Record BLANK, BIFF5-BIFF8:
+    Record: **BLANK, BIFF5-BIFF8**
 
-    Offset  Size    Contents
-    0       2       Index to row
-    2       2       Index to first column (fc)
-    4       2       indexes to XF record
+    +--------+--------+----------------------------+
+    |Offset  |Size    |Contents                    |
+    +========+========+============================+
+    |0       |2       |Index to row                |
+    +--------+--------+----------------------------+
+    |2       |2       |Index to first column (fc)  |
+    +--------+--------+----------------------------+
+    |4       |2       |indexes to XF record        |
+    +--------+--------+----------------------------+
     """
     _REC_ID = 0x0201
 
@@ -1706,7 +1830,7 @@ class ColInfoRecord(BiffRecord):
     |2      |2       |Index to last column in the range                                 |
     +-------+--------+------------------------------------------------------------------+
     |4      |2       |Width of the columns in 1/256 of the width of the zero character, |
-    |                |using default font (ie first FONT record in the file)             |
+    |       |        |using default font (ie first FONT record in the file)             |
     +-------+--------+------------------------------------------------------------------+
     |6      |2       |Index to XF record for default column formatting                  |
     +-------+--------+------------------------------------------------------------------+

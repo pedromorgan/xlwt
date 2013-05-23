@@ -1,6 +1,7 @@
 Quick Start - writing an Excel file
 ===================================
 
+Here is a simple example that creates a workbook with two sheets.
 ::
 
   from xlwt import Workbook
@@ -35,26 +36,30 @@ Quick Start - writing an Excel file
 Creating a Workbook 
 -----------------------------------
 
-Workbooks are created with ``xlwt`` by instantiating 
-an :py:class:`xlwt.Workbook.Workbook` object, manipulating 
-it and then calling its :py:func:`xlwt.Workbook.Workbook.save` method.
+Workbooks are created with `xlwt` by instantiating 
+an :py:class:`~xlwt.Workbook.Workbook` object, manipulating 
+it and then calling its :py:func:`~xlwt.Workbook.Workbook.save` method.
 
-The :ref:``save`` method may be passed either a 
-* string containing the path to write to 
-* or a file-like object, opened for writing in binary mode
+The :py:func:`~xlwt.Workbook.Workbook.save` method may be passed either a 
+string containing the path to write to 
+or a file-like object, opened for writing in binary mode
 to which the binary Excel file data will be written.
 
 The following objects can be created within a workbook:
 
 Worksheets
-~~~~~~~~~~
+~~~~~~~~~~~~~
 
-Worksheets are created with the ``add_sheet`` method of the ``Workbook`` class.
+Worksheets are created with the :py:class:`~xlwt.Workbook.Workbook.add_sheet()` method 
+of the :py:class:`~xlwt.Workbook.Workbook` class.
 
-To retrieve an existing sheet from a ``Workbook``, use its ``get_sheet`` method. This method is particularly useful when the ``Workbook`` has been instantiated by ``xlutils.copy``.
+To retrieve an existing sheet from a :py:class:`~xlwt.Workbook.Workbook`, use 
+its :py:class:`~xlwt.Workbook.Workbook.get_sheet()` method. This method is particularly 
+useful when the :py:class:`~xlwt.Workbook.Workbook` has been 
+instantiated by :py:class:`xlutils.copy`.
 
 Rows
-~~~~
+~~~~~~~
 
 Rows are created using the ``row`` method of the ``Worksheet`` class and contain all of the cells for a given row.
 
