@@ -1684,12 +1684,12 @@ class WSBoolRecord(BiffRecord):
         self._rec_data = pack('<H', options)
 
 class ColInfoRecord(BiffRecord):
-    """
-    This record specifies the width for a given range of columns.
+    """This record specifies the width for a given range of columns.
     If a column does not have a corresponding COLINFO record,
     the width specified in the record STANDARDWIDTH is used. If
     this record is also not present, the contents of the record
     DEFCOLWIDTH is used instead.
+    
     This record also specifies a default XF record to use for
     cells in the columns that are not described by any cell record
     (which contain the XF index for that cell). Additionally,
@@ -1698,19 +1698,31 @@ class ColInfoRecord(BiffRecord):
 
     Record COLINFO, BIFF3-BIFF8:
 
-    Offset  Size    Contents
-    0       2       Index to first column in the range
-    2       2       Index to last column in the range
-    4       2       Width of the columns in 1/256 of the width of the zero character, using default font
-                    (first FONT record in the file)
-    6       2       Index to XF record for default column formatting
-    8       2       Option flags:
-                    Bits    Mask    Contents
-                    0       0001H   1 = Columns are hidden
-                    10-8    0700H   Outline level of the columns (0 = no outline)
-                    12      1000H   1 = Columns are collapsed
-    10      2       Not used
-
+    +-------+--------+------------------------------------------------------------------+
+    |Offset |Size    |Contents                                                          |
+    +=======+========+==================================================================+
+    |0      |2       |Index to first column in the range                                |
+    +-------+--------+------------------------------------------------------------------+
+    |2      |2       |Index to last column in the range                                 |
+    +-------+--------+------------------------------------------------------------------+
+    |4      |2       |Width of the columns in 1/256 of the width of the zero character, |
+    |                |using default font (ie first FONT record in the file)             |
+    +-------+--------+------------------------------------------------------------------+
+    |6      |2       |Index to XF record for default column formatting                  |
+    +-------+--------+------------------------------------------------------------------+
+    |8      |2       |Option flags:                                                     |
+    |       |        | +-------+-------+----------------------------------------------+ |
+    |       |        | |Bits   |Mask   |Contents                                      | |
+    |       |        | +=======+=======+==============================================+ |
+    |       |        | |0      |0001H  |1 = Columns are hidden                        | |
+    |       |        | +-------+-------+----------------------------------------------+ |
+    |       |        | |10-8   |0700H  |Outline level of the columns (0 = no outline) | |
+    |       |        | +-------+-------+----------------------------------------------+ |
+    |       |        | |12     |1000H  |1 = Columns are collapsed                     | |
+    |       |        | +-------+-------+----------------------------------------------+ |
+    +-------+--------+------------------------------------------------------------------+
+    |10     |2       |Not used                                                          |
+    +-------+--------+------------------------------------------------------------------+
     """
     _REC_ID = 0x007D
 
