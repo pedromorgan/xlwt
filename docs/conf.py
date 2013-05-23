@@ -178,6 +178,8 @@ html_show_sphinx = False
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 html_show_copyright = True
 
+html_context = {"XL": {"mod": __PYTHON_EXCEL_MODULE__}}
+
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
 # base URL from which the finished HTML is served.
@@ -250,7 +252,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', __PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__,
-   u'John Machin', 'xlwt', 'One line description of project.',
+   __author__, __PYTHON_EXCEL_MODULE__, 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -265,4 +267,8 @@ texinfo_documents = [
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'http://docs.python.org/': None}
+intersphinx_mapping = {
+    'xlrd': ('https://xlrd.readthedocs.org/en/latest/', None),
+    'xlutils': ('https://xlutils.readthedocs.org/en/latest/', None),
+    'python': ('http://docs.python.org/3.2', None),
+    }
