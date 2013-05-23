@@ -204,24 +204,29 @@ class BiffRecord(object):
 
 
 class Biff8BOFRecord(BiffRecord):
-    """Meta data XX
-    
+    """
     +-------+-----+-------------------------------------------------------------+
-    |Offset |  Size  Contents                                                   |
+    |Offset |Size |Contents                                                     |
     +=======+=====+=============================================================+
-    |0       2     Version, contains 0600H for BIFF8 and BIFF8X
-    |2       2     Type of the following data:
-    |              0005H = Workbook globals
-    |              0006H = Visual Basic module
-    |              0010H = Worksheet
-    |              0020H = Chart
-    |              0040H = Macro sheet
-    |              0100H = Workspace file
-    |4       2     Build identifier
-    |6       2     Build year
-    |8       4     File history flags
-    |12      4     Lowest Excel version that can read all records in this file
-    +------+-----+--------------------------------------------------------------+
+    |0      |2    |Version, contains 0600H for BIFF8 and BIFF8X                 |
+    +-------+-----+-------------------------------------------------------------+
+    |2      |2    |Type of the following data:                                  |
+    |       |     |                                                             |
+    |       |     | * 0005H = Workbook globals                                  |
+    |       |     | * 0006H = Visual Basic module                               |
+    |       |     | * 0010H = Worksheet                                         |
+    |       |     | * 0020H = Chart                                             |
+    |       |     | * 0040H = Macro sheet                                       |
+    |       |     | * 0100H = Workspace file                                    |
+    +-------+-----+-------------------------------------------------------------+
+    |4      |2    |Build identifier                                             |
+    +-------+-----+-------------------------------------------------------------+
+    |6      |2    |Build year                                                   |
+    +-------+-----+-------------------------------------------------------------+
+    |8      |4    |File history flags                                           |
+    +-------+-----+-------------------------------------------------------------+
+    |12     |4    |Lowest Excel version that can read all records in this file  |
+    +-------+-----+-------------------------------------------------------------+
     """
     _REC_ID      = 0x0809
     # stream types
@@ -264,12 +269,11 @@ class MMSRecord(BiffRecord):
 
 
 class WriteAccessRecord(BiffRecord):
-    """
-    This record is part of the file protection. It contains the name of the
-    user  that  has  saved  the  file. The user name is always stored as an
-    equal-sized  string.  All  unused  characters after the name are filled
-    with space characters. It is not required to write the mentioned string
-    length. Every other length will be accepted too.
+    """This record is part of the file protection. 
+      * It contains the name of the user  that  has  saved  the  file. 
+      * The user name is always stored as an equal-sized  string.  
+      * All  unused  characters after the name are filled with space characters. 
+      * It is not required to write the mentioned string length. Every other length will be accepted too.
     """
     _REC_ID = 0x005C
 
@@ -280,13 +284,18 @@ class WriteAccessRecord(BiffRecord):
 
 
 class DSFRecord(BiffRecord):
-    """
-    This  record  specifies  if the file contains an additional BIFF5/BIFF7
-    workbook stream.
+    """This  record  specifies  if the file contains an additional BIFF5/BIFF7 workbook stream.
+    
     Record DSF, BIFF8:
-    Offset Size Contents
-    0        2     0 = Only the BIFF8 Workbook stream is present
-                1 = Additional BIFF5/BIFF7 Book stream is in the file
+    
+    +-------+-----+------------------------------------------------------+
+    |Offset |Size |Contents                                              |
+    +=======+=====+======================================================+
+    |0      |2    |0 = Only the BIFF8 Workbook stream is present         |
+    +-------+-----+------------------------------------------------------+
+    |       |1    |Additional BIFF5/BIFF7 Book stream is in the file  |
+    +-------+-----+------------------------------------------------------+
+    
     A  double  stream file can be read by Excel 5.0 and Excel 95, and still
     contains  all  new  features  added to BIFF8 (which are left out in the
     BIFF5/BIFF7 Book stream).
@@ -313,10 +322,9 @@ class FnGroupCountRecord(BiffRecord):
 
 
 class WindowProtectRecord(BiffRecord):
-    """
-    This record is part of the worksheet/workbook protection. It determines
-    whether  the window configuration of this document is protected. Window
-    protection is not active, if this record is omitted.
+    """This record is part of the worksheet/workbook protection. 
+      * It determines whether  the window configuration of this document is protected. 
+      * Window protection is not active, if this record is omitted.
     """
     _REC_ID = 0x0019
 
@@ -325,10 +333,9 @@ class WindowProtectRecord(BiffRecord):
 
 
 class ObjectProtectRecord(BiffRecord):
-    """
-    This record is part of the worksheet/workbook protection.
-    It determines whether the objects of the current sheet are protected.
-    Object protection is not active, if this record is omitted.
+    """This record is part of the worksheet/workbook protection.
+    * It determines whether the objects of the current sheet are protected.
+    * Object protection is not active, if this record is omitted.
     """
     _REC_ID = 0x0063
 
@@ -1558,18 +1565,14 @@ class RKRecord(BiffRecord):
 
 
 class NumberRecord(BiffRecord):
-    """
-    This record represents a cell that contains an IEEE-754 floating-point value.
-    """
+    """This record represents a cell that contains an IEEE-754 floating-point value."""
     _REC_ID = 0x0203
 
     def __init__(self, row, col, xf_index, number):
         self._rec_data = pack('<3Hd', row, col, xf_index, number)
 
 class BoolErrRecord(BiffRecord):
-    """
-    This record represents a cell that contains a boolean or error value.
-    """
+    """This record represents a cell that contains a boolean or error value."""
     _REC_ID = 0x0205
 
     def __init__(self, row, col, xf_index, number, is_error):
@@ -1578,18 +1581,33 @@ class BoolErrRecord(BiffRecord):
 
 class FormulaRecord(BiffRecord):
     """
-    Offset Size Contents
-    0      2    Index to row
-    2      2    Index to column
-    4      2    Index to XF record
-    6      8    Result of the formula
-    14     2    Option flags:
-                Bit Mask    Contents
-                0   0001H   1 = Recalculate always
-                1   0002H   1 = Calculate on open
-                3   0008H   1 = Part of a shared formula
-    16     4    Not used
-    20     var. Formula data (RPN token array)
+        +-------+-----+----------------------------------------------+
+        |Offset |Size |Contents                                      | 
+        +=======+=====+==============================================+
+        |0      |2    |Index to row                                  |
+        +-------+-----+----------------------------------------------+
+        |2      |2    |Index to column                               |
+        +-------+-----+----------------------------------------------+
+        |4      |2    |Index to XF record                            |
+        +-------+-----+----------------------------------------------+
+        |6      |8    |Result of the formula                         |
+        +-------+-----+----------------------------------------------+
+        |14     |2    |Option flags:                                 |
+        |       |     | +----+-------+----------------------------+  |
+        |       |     | +Bit |Mask   |Contents                    |  |
+        |       |     | +====+=======+============================+  |
+        |       |     | |0   |0001H  |1 = Recalculate always      |  |
+        |       |     | +----+-------+----------------------------+  |
+        |       |     | |1   |0002H  |1 = Calculate on open       |  |
+        |       |     | +----+-------+----------------------------+  |
+        |       |     | |3   |0008H  |1 = Part of a shared formula|  |
+        |       |     | +----+-------+----------------------------+  |
+        |       |     |                                              |
+        +-------+-----+----------------------------------------------+
+        |16     |4    |Not used                                      |
+        +-------+-----+----------------------------------------------+
+        |20     |var .|Formula data (RPN token array)                |
+        +-------+-----+----------------------------------------------+
 
     """
     _REC_ID = 0x0006
@@ -2288,48 +2306,87 @@ class SetupPageRecord(BiffRecord):
                                         num_copies)
 
 class NameRecord(BiffRecord):
-    """
-    This record is part of a Link Table. It contains the name and the token
-    array of an internal defined name. Token arrays of defined names
-    contain tokens with aberrant token classes.
+    """This record is part of a Link Table. 
+    
+    * It contains the name and the token array of an internal defined name. 
+    * Token arrays of defined names contain tokens with aberrant token classes.
+    
+    Record NAME: **BIFF5/BIFF7**
+    
+    +---------+-----+--------------------------------------------------------------------+
+    |Offset   |Size |Contents                                                            |
+    +=========+=====+====================================================================+
+    |0        |2    |Option flags, see below                                             |
+    +---------+-----+--------------------------------------------------------------------+
+    |2        |1    |Keyboard shortcut (only for command macro names, see below)         |
+    +---------+-----+--------------------------------------------------------------------+
+    |3        |1    |Length of the name (character count, ln)                            |
+    +---------+-----+--------------------------------------------------------------------+
+    |4        |2    |Size of the formula data (sz)                                       |
+    +---------+-----+--------------------------------------------------------------------+
+    |6        |2    |0 = Global name, otherwise index to EXTERNSHEET record (one-based)  |
+    +---------+-----+--------------------------------------------------------------------+
+    |8        |2    |0 = Global name, otherwise index to sheet (one-based)               |
+    +---------+-----+--------------------------------------------------------------------+
+    |10       |1    |Length of menu text (character count, lm)                           |
+    +---------+-----+--------------------------------------------------------------------+
+    |11       |1    |Length of description text (character count, ld)                    |
+    +---------+-----+--------------------------------------------------------------------+
+    |12       |1    |Length of help topic text (character count, lh)                     |
+    +---------+-----+--------------------------------------------------------------------+
+    |13       |1    | Length of status bar text (character count, ls)                    |
+    +---------+-----+--------------------------------------------------------------------+
+    |14       |ln   |Character array of the name                                         |
+    +---------+-----+--------------------------------------------------------------------+
+    |14+ln    |sz   |Formula data (RPN token array without size field, 4)                |
+    +---------+-----+--------------------------------------------------------------------+
+    |14+ln+sz |lm   |Character array of menu text                                        |
+    +---------+-----+--------------------------------------------------------------------+
+    |var.     |ld   |Character array of description text                                 |
+    +---------+-----+--------------------------------------------------------------------+
+    |var.     |lh   |Character array of help topic text                                  |
+    +---------+-----+--------------------------------------------------------------------+
+    |var.     |ls   |Character array of status bar text                                  |
+    +---------+-----+--------------------------------------------------------------------+
 
-    Record NAME, BIFF5/BIFF7:
-    Offset      Size    Contents
-    0          2     Option flags, see below
-    2          1     Keyboard shortcut (only for command macro names, see below)
-    3          1     Length of the name (character count, ln)
-    4          2     Size of the formula data (sz)
-    6          2     0 = Global name, otherwise index to EXTERNSHEET record (one-based)
-    8          2     0 = Global name, otherwise index to sheet (one-based)
-    10          1     Length of menu text (character count, lm)
-    11          1     Length of description text (character count, ld)
-    12          1     Length of help topic text (character count, lh)
-    13          1     Length of status bar text (character count, ls)
-    14         ln     Character array of the name
-    14+ln        sz     Formula data (RPN token array without size field, 4)
-14+ln+sz       lm     Character array of menu text
-    var.        ld     Character array of description text
-    var.        lh     Character array of help topic text
-    var.        ls     Character array of status bar text
-
-    Record NAME, BIFF8:
-    Offset      Size Contents
-    0          2  Option flags, see below
-    2          1  Keyboard shortcut (only for command macro names, see below)
-    3          1  Length of the name (character count, ln)
-    4          2  Size of the formula data (sz)
-    6          2  Not used
-    8          2  0 = Global name, otherwise index to sheet (one-based)
-    10          1  Length of menu text (character count, lm)
-    11          1  Length of description text (character count, ld)
-    12          1  Length of help topic text (character count, lh)
-    13          1  Length of status bar text (character count, ls)
-    14        var. Name (Unicode string without length field, 3.4)
-    var.        sz  Formula data (RPN token array without size field, 4)
-    [var.]      var. (optional, only if lm > 0) Menu text (Unicode string without length field, 3.4)
-    [var.]      var. (optional, only if ld > 0) Description text (Unicode string without length field, 3.4)
-    [var.]      var. (optional, only if lh > 0) Help topic text (Unicode string without length field, 3.4)
-    [var.]      var. (optional, only if ls > 0) Status bar text (Unicode string without length field, 3.4)
+    Record NAME: **BIFF8**
+    
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |Offset   |Size |Contents                                                                               |
+    +=========+=====+=======================================================================================+
+    |0        |2    | Option flags, see below                                                               |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |2        |1    |Keyboard shortcut (only for command macro names, see below)                            |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |3        |1    |Length of the name (character count, ln)                                               |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |4        |2    |Size of the formula data (sz)                                                          |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |6        |2    |Not used                                                                               |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |8        |2    |0 = Global name, otherwise index to sheet (one-based)                                  |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |10       |1    |Length of menu text (character count, lm)                                              |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |11       |1    |Length of description text (character count, ld)                                       |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |12       |1    |Length of help topic text (character count, lh)                                        |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |13       |1    |Length of status bar text (character count, ls)                                        |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |14       |var. |Name (Unicode string without length field, 3.4)                                        |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |var.     |sz   |Formula data (RPN token array without size field, 4)                                   |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |[var.]   |var. |(optional, only if lm > 0) Menu text (Unicode string without length field, 3.4)        |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |[var.]   |var. |(optional, only if ld > 0) Description text (Unicode string without length field, 3.4) |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |[var.]   |var. |(optional, only if lh > 0) Help topic text (Unicode string without length field, 3.4)  |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    |[var.]   |var. |(optional, only if ls > 0) Status bar text (Unicode string without length field, 3.4)  |
+    +---------+-----+---------------------------------------------------------------------------------------+
+    
     """
     _REC_ID = 0x0018
 
