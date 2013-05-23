@@ -3,3 +3,7 @@
 *.egg-info
 /build
 docs/_build
+.project
+.pydevproject
+.settings
+.DS_Store

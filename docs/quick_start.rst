@@ -1,16 +1,45 @@
 Quick Start - writing an Excel file
 ===================================
 
-All the examples shown below can be found in the ``xlwt`` directory of the TODO course material.
+::
+
+  from xlwt import Workbook
+
+  ## Create a spreadsheet in memory
+  wb = Workbook()
+  
+  ## add a tab and some stuff
+  sheet1 = book.add_sheet('Sheet 1')
+  book.add_sheet('Sheet 2')
+
+  sheet1.write(0, 0, 'A1')
+  sheet1.write(0, 1, 'B1')
+  row1 = sheet1.row(1)
+  row1.write(0, 'A2')
+  row1.write(1, 'B2')
+  sheet1.col(0).width = 10000
+
+  ## create second tab
+  sheet2 = book.get_sheet(1)
+  sheet2.row(0).write(0,'Sheet 2 A1')
+  sheet2.row(0).write(1,'Sheet 2 B1')
+  sheet2.flush_row_data()
+  sheet2.write(1,0,'Sheet 2 A3')
+  sheet2.col(0).width = 5000
+  sheet2.col(0).hidden = True
+
+  # Write to file
+  book.save('xlwt-example.xls')
+  
 
 Creating a Workbook 
 -----------------------------------
 
 Workbooks are created with ``xlwt`` by instantiating 
-an ref:`xlwt.Workbook` object, manipulating 
-it and then calling its :py:meth:``Workbook.save`` method.
+an :py:class:`xlwt.Workbook.Workbook` object, manipulating 
+it and then calling its :py:func:`xlwt.Workbook.Workbook.save` method.
 
-The ``save`` method may be passed either a string containing the path to write to or a file-like object, opened for writing in binary mode, to which the binary Excel file data will be written.
+The :ref:``save`` method may be passed either a string containing the path to write to or a file-like object, opened for writing in binary mode, to which the binary Excel file data will be written.
 
 The following objects can be created within a workbook:
 

@@ -662,6 +662,7 @@ class Workbook(object):
         return before + bundlesheets + after + ext_sst + eof + sheets
 
     def save(self, filename):
+        """Writes out a file to filename"""
         import CompoundDoc
 
         doc = CompoundDoc.XlsDoc()
